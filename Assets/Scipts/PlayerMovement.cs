@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 5f;
     private float gravity = 20f;
     public float jump_Force = 10f;
-    private float vertacal_Velocity;
+    private float vertical_Velocity;
 
 
     void Start(){
@@ -30,6 +30,21 @@ public class PlayerMovement : MonoBehaviour
         move_Direction = transform.TransformDirection(move_Direction);
         move_Direction *= speed * Time.deltaTime;
 
+        applyGravity();
+
         character_Controller.Move(move_Direction);
+    }
+
+    void applyGravity(){
+        vertical_Velocity -= gravity * Time.deltaTime;
+        Jump();
+        move_Direction.y = vertical_Velocity * Time.deltaTime;
+    }
+
+    private void Jump()
+    {
+        if(character_Controller.isGrounded && Input.GetKeyDown(KeyCode.Space)){
+            vertical_Velocity = jump_Force;
+        }
     }
 }
